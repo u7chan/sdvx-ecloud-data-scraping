@@ -1,31 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import * as dotenv from 'dotenv';
-
-type MusicDetail = {
-  level: number;
-  difficulty:
-    | 'NOV'
-    | 'ADV'
-    | 'EXH'
-    | 'MXM'
-    | 'INF'
-    | 'GRV'
-    | 'HVN'
-    | 'VVD'
-    | 'XCD';
-  jacket: string;
-};
-
-type Music = {
-  title: string;
-  artist: string;
-  details: MusicDetail[];
-  tags: string[];
-  pack: string;
-};
-
-type InitialMusic = Omit<Music, 'details'>;
+import { MusicDetail, Music, MusicInitial } from './types';
 
 dotenv.config();
 
@@ -49,7 +25,7 @@ const parseDetailUrls = ($: cheerio.CheerioAPI): string[] => {
 
 const fetchDetailFormUrl = async (
   url: string,
-  music: InitialMusic
+  music: MusicInitial
 ): Promise<Music> => {
   const $ = parseCheerioDom(await fetchHtml(url));
   const details = $('div.cat')
