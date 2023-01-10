@@ -17,6 +17,23 @@ const parseCheerioDom = (html: string): cheerio.CheerioAPI => {
   return cheerio.load(html);
 };
 
+const parseMusicList = ($: cheerio.CheerioAPI): MusicInitial[] => {
+  return $('div.music')
+    .map((_, el) => {
+      const info = $(el).find('div.info > p');
+      return {
+        title: $(info[0]).text(),
+        artist: $(info[1]).text(),
+        pack: $(info[2]).text(),
+        tags: $(el)
+          .find('.genre')
+          .toArray()
+          .map((it) => $(it).text()),
+      } as MusicInitial;
+    })
+    .toArray();
+};
+
 const parseDetailUrls = ($: cheerio.CheerioAPI): string[] => {
   return $('a.detail_pop')
     .toArray()
@@ -49,17 +66,18 @@ const main = async () => {
   const $ = parseCheerioDom(await fetchHtml(INDEX_URL));
   const maxPage = $('select#search_page > option').last().val();
   console.log('#', { maxPage });
-  //fetchDetailUrls($);
-  const r = await fetchDetailFormUrl(
-    'https://p.eagate.573.jp/game/eacsdvx/vi/music/detail.html?music_id=h9gcpJ23dTi67XZRo2okkg',
-    {
-      title: 'dummy',
-      artist: 'aaa',
-      tags: [],
-      pack: 'no',
-    }
-  );
-  console.log('#', { r: JSON.stringify(r) });
+  const currentPageMusicList = parseMusicList($);
+  console.log(currentPageMusicList);
+  // const r = await fetchDetailFormUrl(
+  //   'https://p.eagate.573.jp/game/eacsdvx/vi/music/detail.html?music_id=h9gcpJ23dTi67XZRo2okkg',
+  //   {
+  //     title: 'dummy',
+  //     artist: 'aaa',
+  //     tags: [],
+  //     pack: 'no',
+  //   }
+  // );
+  // console.log('#', { r: JSON.stringify(r) });
 };
 
 main();
