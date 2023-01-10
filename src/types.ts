@@ -21,4 +21,6 @@ export type Music = {
   pack: string;
 };
 
-export type MusicInitial = Omit<Music, 'details'>;
+export type MusicInitial = Omit<Music, 'details'> & {
+  detailUrl: string;
+};

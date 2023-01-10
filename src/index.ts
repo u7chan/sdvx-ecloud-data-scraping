@@ -1,12 +1,9 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import * as dotenv from 'dotenv';
 import { MusicDetail, Music, MusicInitial } from './types';
+import { envs } from './envs';
 
-dotenv.config();
-
-const BASE_URL = `${process.env.BASE_URL}`;
-const INDEX_URL = `${BASE_URL}${process.env.INDEX_PATH}`;
+axios.defaults.baseURL = envs.BASE_URL;
 
 const fetchHtml = async (url: string): Promise<string> => {
   const { data: html } = await axios.get(url);
@@ -25,6 +22,7 @@ const parseMusicList = ($: cheerio.CheerioAPI): MusicInitial[] => {
         title: $(info[0]).text(),
         artist: $(info[1]).text(),
         pack: $(info[2]).text(),
+        detailUrl: $(el).find('a.detail_pop').attr('href'),
         tags: $(el)
           .find('.genre')
           .toArray()
@@ -34,17 +32,11 @@ const parseMusicList = ($: cheerio.CheerioAPI): MusicInitial[] => {
     .toArray();
 };
 
-const parseDetailUrls = ($: cheerio.CheerioAPI): string[] => {
-  return $('a.detail_pop')
-    .toArray()
-    .map(({ attribs }) => `${BASE_URL}${attribs['href']}`);
-};
-
-const fetchDetailFormUrl = async (
-  url: string,
-  music: MusicInitial
-): Promise<Music> => {
-  const $ = parseCheerioDom(await fetchHtml(url));
+const fetchDetailFormUrl = async ({
+  detailUrl,
+  ...music
+}: MusicInitial): Promise<Music> => {
+  const $ = parseCheerioDom(await fetchHtml(detailUrl));
   const details = $('div.cat')
     .map((_, el) => {
       const jacket = $(el).find('div.jk img').first().attr('src');
@@ -52,7 +44,7 @@ const fetchDetailFormUrl = async (
       return {
         level: Number(difficulty.html()),
         difficulty: difficulty.attr('class')?.toUpperCase() || '',
-        jacket: `${BASE_URL}${jacket}`,
+        jacket: `${jacket}`,
       } as MusicDetail;
     })
     .toArray();
@@ -63,11 +55,13 @@ const fetchDetailFormUrl = async (
 };
 
 const main = async () => {
-  const $ = parseCheerioDom(await fetchHtml(INDEX_URL));
+  const $ = parseCheerioDom(await fetchHtml(envs.INDEX_PATH));
   const maxPage = $('select#search_page > option').last().val();
   console.log('#', { maxPage });
-  const currentPageMusicList = parseMusicList($);
-  console.log(currentPageMusicList);
+  parseMusicList($).map((it) => {
+    console.log(it);
+  });
+
   // const r = await fetchDetailFormUrl(
   //   'https://p.eagate.573.jp/game/eacsdvx/vi/music/detail.html?music_id=h9gcpJ23dTi67XZRo2okkg',
   //   {
