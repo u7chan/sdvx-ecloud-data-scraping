@@ -57,21 +57,14 @@ const fetchDetailFormUrl = async ({
 const main = async () => {
   const $ = parseCheerioDom(await fetchHtml(envs.INDEX_PATH));
   const maxPage = $('select#search_page > option').last().val();
-  console.log('#', { maxPage });
-  parseMusicList($).map((it) => {
-    console.log(it);
-  });
+  const result = await Promise.all(
+    parseMusicList($).map((it) => {
+      return it;
+      //return fetchDetailFormUrl(it);
+    })
+  );
 
-  // const r = await fetchDetailFormUrl(
-  //   'https://p.eagate.573.jp/game/eacsdvx/vi/music/detail.html?music_id=h9gcpJ23dTi67XZRo2okkg',
-  //   {
-  //     title: 'dummy',
-  //     artist: 'aaa',
-  //     tags: [],
-  //     pack: 'no',
-  //   }
-  // );
-  // console.log('#', { r: JSON.stringify(r) });
+  console.log('#', { maxPage, result });
 };
 
 main();
