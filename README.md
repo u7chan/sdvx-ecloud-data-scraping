@@ -4,9 +4,9 @@
 
 ## Usage
 
-```bash
-$ yarn install
-$ yarn start
+```zsh
+% yarn install
+% yarn build
 ```
 
 ## Output Example JSON

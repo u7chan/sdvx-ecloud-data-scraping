@@ -2,7 +2,8 @@
   "name": "sdvx-ecloud-data-scraping",
   "version": "1.0.0",
   "scripts": {
-    "start": "./node_modules/.bin/ts-node src/index.ts"
+    "build": "./node_modules/.bin/ts-node src/index.ts",
+    "lint": "eslint --ext .jsx,.js,.tsx,.ts src/"
   },
   "license": "MIT",
   "devDependencies": {

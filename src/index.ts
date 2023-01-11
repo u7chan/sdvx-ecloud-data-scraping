@@ -82,12 +82,13 @@ const main = async () => {
       const music = await musicPromise[j];
       result.push(music);
     }
-    console.log(`processing... ${i}/${maxPage}`);
+    console.log(`🤖  Processing... ${i}/${maxPage}`);
   }
   if (!fs.existsSync(OUTPUT_DIR)) {
     fs.mkdirSync(OUTPUT_DIR);
   }
   fs.writeFileSync(OUTPUT_PATH, JSON.stringify(result, null, 2));
+  console.log(`🍻  Done.`);
 };
 
 main();
