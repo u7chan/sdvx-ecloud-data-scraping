@@ -21,9 +21,7 @@
       "title": "I Left for my Right",
       "artist": "あの日字数制限に負けて追い出された「ゃ」",
       "pack": "コナステ版 SOUND VOLTEX 楽曲パック vol.19",
-      "tags": [
-        "FLOOR"
-      ],
+      "tags": ["FLOOR"],
       "details": [
         {
           "level": 5,
@@ -51,9 +49,7 @@
       "title": "Avalanx",
       "artist": "隣の庭は青い(庭師+Aoi)",
       "pack": "コナステ版 SOUND VOLTEX 楽曲パック vol.19",
-      "tags": [
-        "SDVXオリジナル"
-      ],
+      "tags": ["SDVXオリジナル"],
       "details": [
         {
           "level": 7,
@@ -81,9 +77,7 @@
       "title": "Across the Starlight",
       "artist": "かゆき",
       "pack": "コナステ版 SOUND VOLTEX 楽曲パック vol.19",
-      "tags": [
-        "FLOOR"
-      ],
+      "tags": ["FLOOR"],
       "details": [
         {
           "level": 6,
@@ -106,7 +100,8 @@
           "jacket": "/game/sdvx/vi/common/jacket.html?img=lAw4OY0gnkg_wMMGaV_niA"
         }
       ]
-    },
+    }
     // ...
+  ]
 }
 ```
