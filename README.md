@@ -11,7 +11,7 @@
 
 ## Output Example JSON
 
-```json
+```jsonc
 [
   {
     "title": "Amazing Mirage",
