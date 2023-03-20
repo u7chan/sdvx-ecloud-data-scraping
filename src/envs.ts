@@ -1,8 +1,9 @@
-import * as dotenv from 'dotenv';
+import * as dotenv from 'dotenv'
 
-dotenv.config();
+dotenv.config()
 
 export const envs = {
   BASE_URL: process.env.BASE_URL || '',
-  INDEX_PATH: process.env.INDEX_PATH || '',
-};
+  ARCADE_PATH: process.env.ARCADE_PATH || '',
+  EA_CLOUD_PATH: process.env.EA_CLOUD_PATH || '',
+}
