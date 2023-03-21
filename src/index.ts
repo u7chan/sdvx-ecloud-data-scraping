@@ -1,11 +1,8 @@
 import axios from 'axios'
-import fs from 'fs'
 import * as cheerio from 'cheerio'
 import { MusicDetail, Music, MusicInitial, SdvxData, SdvxType } from './types'
 import { envs } from './envs'
-
-const OUTPUT_DIR = 'dist'
-const OUTPUT_PATH = `${OUTPUT_DIR}/output_{0}.json`
+import { fileUtils } from './fileUtils'
 
 axios.defaults.baseURL = envs.BASE_URL
 
@@ -105,11 +102,7 @@ const main = async () => {
   const type: SdvxType = process.argv[2] ? 'arcade' : 'eacloud'
   console.log(`🔨  Mode: ${type}`)
   const data = await execute(type)
-  if (!fs.existsSync(OUTPUT_DIR)) {
-    fs.mkdirSync(OUTPUT_DIR)
-  }
-  const filePath = OUTPUT_PATH.replace('{0}', type)
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2))
+  fileUtils.saveJSON(type, data)
   console.log(`🍻  Exported.`)
 }
 
