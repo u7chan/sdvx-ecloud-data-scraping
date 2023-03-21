@@ -1,26 +1,8 @@
-import axios from 'axios'
 import * as cheerio from 'cheerio'
 import { MusicDetail, Music, MusicInitial, SdvxData, SdvxType } from './types'
 import { envs } from './envs'
 import { fileUtils } from './fileUtils'
-
-axios.defaults.baseURL = envs.BASE_URL
-
-const fetchHtml = async (url: string): Promise<string> => {
-  const { data: html } = await axios.get(url)
-  return html
-}
-
-const fetchIndex = async (url: string, pageIndex: number): Promise<string> => {
-  const headers = {
-    'Content-Type': 'application/x-www-form-urlencoded',
-  }
-  const body = { page: pageIndex }
-  const { data: html } = await axios.post(url, body, {
-    headers,
-  })
-  return html
-}
+import { sdvxHttpClient } from './sdvxHttpClient'
 
 const parseCheerioDom = (html: string): cheerio.CheerioAPI => {
   return cheerio.load(html)
@@ -45,7 +27,7 @@ const parseMusicList = ($: cheerio.CheerioAPI): MusicInitial[] => {
 }
 
 const fetchDetailFormUrl = async ({ detailUrl, ...music }: MusicInitial): Promise<Music> => {
-  const $ = parseCheerioDom(await fetchHtml(detailUrl))
+  const $ = parseCheerioDom(await sdvxHttpClient.fetchHtml(detailUrl))
   const details = $('div.cat')
     .map((_, el) => {
       const jacket = $(el).find('div.jk img').first().attr('src')
@@ -64,11 +46,11 @@ const fetchDetailFormUrl = async ({ detailUrl, ...music }: MusicInitial): Promis
 }
 
 const sdvxMusicAnalysis = async (path: string): Promise<Music[]> => {
-  const $ = parseCheerioDom(await fetchIndex(path, 1))
+  const $ = parseCheerioDom(await sdvxHttpClient.fetchPageHtml(path, 1))
   const maxPage = Number($('select#search_page > option').last().val())
   const result: Music[] = []
   for (let i = 1; i <= maxPage; ++i) {
-    const dom = parseCheerioDom(await fetchIndex(path, i))
+    const dom = parseCheerioDom(await sdvxHttpClient.fetchPageHtml(path, i))
     const list = parseMusicList(dom)
     for (let j = 0; j < list.length; ++j) {
       const data: MusicInitial = list[j]

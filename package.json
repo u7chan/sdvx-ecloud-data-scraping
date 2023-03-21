@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "build": "./node_modules/.bin/ts-node src/index.ts",
-    "build:arcade": "./node_modules/.bin/ts-node src/index.ts arcade",
+    "build:ac": "./node_modules/.bin/ts-node src/index.ts arcade",
     "download": "./node_modules/.bin/ts-node src/jacketImageDownloader.ts",
-    "download:arcade": "./node_modules/.bin/ts-node src/jacketImageDownloader.ts arcade",
+    "download:ac": "./node_modules/.bin/ts-node src/jacketImageDownloader.ts arcade",
     "lint": "eslint --ext .jsx,.js,.tsx,.ts src/"
   },
   "license": "MIT",
