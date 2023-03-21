@@ -17,4 +17,8 @@ export const sdvxHttpClient = {
     })
     return html
   },
+  fetchBinary: async (url: string): Promise<ArrayBuffer> => {
+    const { data } = await axios.get(url, { responseType: 'arraybuffer' })
+    return data
+  },
 }

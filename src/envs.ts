@@ -8,4 +8,5 @@ export const envs = {
   EA_CLOUD_PATH: process.env.EA_CLOUD_PATH || '',
   OUTPUT_DIR: process.env.OUTPUT_DIR || '',
   OUTPUT_FILE: process.env.OUTPUT_FILE || '',
+  OUTPUT_IMAGE_DIR: process.env.OUTPUT_IMAGE_DIR || '',
 }
